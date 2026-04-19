@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7. Password Generator</title>
+  <style>
+    body { font-family: Arial; padding: 30px; text-align: center; }
+    input { width: 300px; padding: 12px; font-size: 18px; }
+    .strength { height: 10px; width: 300px; margin: 10px auto; background: #ddd; border-radius: 5px; }
+    .bar { height: 100%; width: 0%; transition: 0.3s; }
+    button { padding: 12px 20px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Password Generator</h1>
+  <input type="text" id="password" readonly>
+  <button onclick="generatePassword()">Yangi Parol</button>
+  <div class="strength"><div class="bar" id="bar"></div></div>
+  <p id="strengthText">Kuchini tekshiring</p>
+
+  <script>
+    function generatePassword() {
+      const length = 12;
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+      let pass = "";
+      for (let i = 0; i < length; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('password').value = pass;
+      checkStrength(pass);
+    }
+
+    function checkStrength(password) {
+      const bar = document.getElementById('bar');
+      const text = document.getElementById('strengthText');
+      let strength = 0;
+      if (password.length > 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+      const percent = (strength / 4) * 100;
+      bar.style.width = percent + "%";
+      bar.style.background = percent > 75 ? "green" : percent > 50 ? "orange" : "red";
+      text.textContent = percent > 75 ? "Kuchli" : percent > 50 ? "O'rtacha" : "Zaif";
+    }
+  </script>
+</body>
+</html>
